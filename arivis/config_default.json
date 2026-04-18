@@ -1,0 +1,7 @@
+{
+    "input_tag": "implant",
+    "n_layers": 5,
+    "radial_layer_thickness_mm": 0.4,
+    "implant_height_mm": 7.5,
+    "verbose_path": "D:/Iva/Vargova_560_implant"
+}
