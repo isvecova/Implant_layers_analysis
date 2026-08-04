@@ -28,6 +28,7 @@ Layers are named "Layer 1", "Layer 2", etc. starting from the outer layer.
 
 Written by: Iva Svecova (isvecova47@gmail.com)
 Date: 2026-04-05
+Last edited: 2026-08-04
 */
 
 // ------------------------------------------------------------
@@ -36,7 +37,7 @@ Date: 2026-04-05
 // Implant parameters
 int nLayers = 5 // number of layers on each side from the centre
 double radialLayerThicknessMM = 0.4  // thickness of one layer in the radial direction in mm
-double implantHeightMM = 7.5  // height of the implant (longer side of the ROI) in mm
+String dimensionToSegment = "shorter" // "shorter" or "longer" dimension of the rectangle to use for layer thickness calculation and layer creation
 
 // ------------------------------------------------------------
 // 1) get selected ROI
@@ -82,6 +83,15 @@ print "Pixel size: " + pixelSizeMicrons + " microns\n"
 // ------------------------------------------------------------
 def rectInfo = getRectFromPoints(pts)
 
+dimensionToSegment = dimensionToSegment?.trim()?.toLowerCase()
+if (!(dimensionToSegment in ["shorter", "longer"])) {
+    print "Invalid dimensionToSegment: " + dimensionToSegment + ". Use 'shorter' or 'longer'.\n"
+    return
+}
+
+boolean segmentLongDimension = dimensionToSegment == "longer"
+double segmentedHalf = segmentLongDimension ? rectInfo.longHalf : rectInfo.shortHalf
+print "Segmenting along " + dimensionToSegment + " dimension.\n"
 
 // ------------------------------------------------------------
 // 6) compute layer thicknesses 
@@ -92,12 +102,12 @@ def rectInfo = getRectFromPoints(pts)
 //      As the cut might be offset from the centre, the layer thickness in the plane of the section will be different from the radial thickness.
 // ------------------------------------------------------------
 
-double widthMM = (rectInfo.shortHalf * 2) * pixelSizeMicrons / 1000.0
-print "Width at section plane [mm]: " + widthMM
+double segmentedWidthMM = (segmentedHalf * 2) * pixelSizeMicrons / 1000.0
+print "Segmented width at section plane [mm]: " + segmentedWidthMM + "\n"
 
 double k = 0
-if (widthMM < 2 * nLayers * radialLayerThicknessMM) {
-    k = Math.sqrt(Math.pow(nLayers*radialLayerThicknessMM, 2) - Math.pow(widthMM / 2, 2)) / radialLayerThicknessMM
+if (segmentedWidthMM < 2 * nLayers * radialLayerThicknessMM) {
+    k = Math.sqrt(Math.pow(nLayers*radialLayerThicknessMM, 2) - Math.pow(segmentedWidthMM / 2, 2)) / radialLayerThicknessMM
 } else {
     print "Warning: The specified number of layers and thickness exceeds the width of the implant at the section plane."
 }
@@ -127,7 +137,7 @@ layerWidthsPx = layerWidthsPx.reverse()  // reverse to start from outer layers
 // ------------------------------------------------------------
 def rectangles = []
 
-double currentHalf = rectInfo.shortHalf
+double currentHalf = segmentedHalf
 
 // Omit the last layer because it will be added as the final inner rectangle rather than a difference between two rectangles
 for (int i = 0; i < layerWidthsPx.size() - 1; i++) {
@@ -141,8 +151,8 @@ for (int i = 0; i < layerWidthsPx.size() - 1; i++) {
         center   : rectInfo.center,
         ux       : rectInfo.ux,
         uy       : rectInfo.uy,
-        longHalf : rectInfo.longHalf,
-        shortHalf: currentHalf
+        longHalf : segmentLongDimension ? currentHalf : rectInfo.longHalf,
+        shortHalf: segmentLongDimension ? rectInfo.shortHalf : currentHalf
     ])
 
     double nextHalf = currentHalf - layerWidth
@@ -158,8 +168,8 @@ rectangles.add([
     center   : rectInfo.center,
     ux       : rectInfo.ux,
     uy       : rectInfo.uy,
-    longHalf : rectInfo.longHalf,
-    shortHalf: currentHalf
+    longHalf : segmentLongDimension ? currentHalf : rectInfo.longHalf,
+    shortHalf: segmentLongDimension ? rectInfo.shortHalf : currentHalf
 ])
 
 // ------------------------------------------------------------

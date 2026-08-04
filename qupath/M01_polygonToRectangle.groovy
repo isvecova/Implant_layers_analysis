@@ -20,12 +20,14 @@ Output:
 
 Written by: Iva Svecova (isvecova47@gmail.com)
 Date: 2026-04-05
+Last edited: 2026-08-04
 */
 
 // ------------------------------------------------------------
 // 0) Specify parameters
 // ------------------------------------------------------------
 // Implant parameter
+String heightSetup = "fixed"  // "fixed" (implantHeightMM is imposed) or "flexible" (implantHeight is determined from the user-defined polygon)
 double implantHeightMM = 7.5  // mm
 
 // ------------------------------------------------------------
@@ -69,7 +71,7 @@ println "Fixed long side [px]: ${fixedLongPx}"
 // ------------------------------------------------------------
 // 3) fit rotated rectangle (PCA-based)
 // ------------------------------------------------------------
-def rectInfo = fitRectWithFixedLongSide(pts, fixedLongPx)
+def rectInfo = fitRectWithFixedLongSide(pts, fixedLongPx, heightSetup)
 
 // ------------------------------------------------------------
 // 4) build rectangle ROI
@@ -112,7 +114,7 @@ print "Done.\n"
 // ============================================================
 
 // Fit a rectangle with a fixed long side to a set of 2D points using PCA
-static def fitRectWithFixedLongSide(List<Point2D.Double> pts, double fixedLongSidePx) {
+static def fitRectWithFixedLongSide(List<Point2D.Double> pts, double fixedLongSidePx, String heightSetup) {
     // 1. Compute centroid (mean x, y)
     double mx = pts.collect{it.x}.sum() / pts.size()
     double my = pts.collect{it.y}.sum() / pts.size()
@@ -176,12 +178,22 @@ static def fitRectWithFixedLongSide(List<Point2D.Double> pts, double fixedLongSi
     double cx = mx + centerU * ux + centerV * vx
     double cy = my + centerU * uy + centerV * vy
 
+    // Set height based on the specified mode
+    heightSetup = heightSetup?.trim()?.toLowerCase()
+    if (!(heightSetup in ["flexible", "fixed"])) {
+        print "Invalid heightSetup: " + heightSetup + ". Use 'fixed' or 'flexible'.\n"
+        return
+    }
+
+    boolean segmentLongDimension = heightSetup == "fixed"
+    double segmentedLength = segmentLongDimension ? fixedLongSidePx : extentU
+
     // 8. Return rectangle parameters: center, orientation, half-lengths
     [
         center   : new Point2D.Double(cx, cy),
         ux       : ux, // unit vector x-component (long axis)
         uy       : uy, // unit vector y-component (long axis)
-        longHalf : fixedLongSidePx / 2.0, // half of fixed long side
+        longHalf : segmentedLength / 2.0, // half of the segmented long side
         shortHalf: extentV / 2.0          // half of fitted short side
     ]
 }

@@ -76,15 +76,16 @@ More information here: https://www.iem.cas.cz/en/department/microscopy-service-c
 
 ## Time breakdown
 
-| Activity | Estimated duration (hours) | 
-|---|---|
-| Initial automated implant detection design | 1.5 | 
-| Segmentation and layer generation in QuPath | 3 |
-| Mathematical description of the layers cut off-centre | 2 |
-| Implementation of the mathematical model in QuPath | 2 |
-| Examination of Arivis-Python interface | 3 |
-| Adjusting Arivis-Python script to fit the mathematical model | 4 |
-| Documentation, troubleshooting | 2 |
-| Meetings, discussions | 2 |
-| | |
+| Activity | Estimated duration (hours) | Date |
+|---|---|---|
+| Initial automated implant detection design | 1.5 | |
+| Segmentation and layer generation in QuPath | 3 | |
+| Mathematical description of the layers cut off-centre | 2 | |
+| Implementation of the mathematical model in QuPath | 2 | |
+| Examination of Arivis-Python interface | 3 | |
+| Adjusting Arivis-Python script to fit the mathematical model | 4 | |
+| Documentation, troubleshooting | 2 | |
+| Meetings, discussions | 2 | |
+| Update to enable flexible implant length and selection of edge to segment into layers | 1 | 2026-08-04 |
+| | | |
 
