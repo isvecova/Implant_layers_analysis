@@ -30,6 +30,11 @@ There are two alrernative workflows:
   - **Input:** Image with a single, dark rectangular implant area.
   - **Output:** Concentric rectangular layers with thickness measurements in mm.
 
+Alternative: 
+- [**01b_detectAndMakeLayers_withOuterLayer.groovy**](qupath/01b_detectAndMakeLayers_withOuterLayer.groovy)
+
+  Same as [01_detectAndMakeLayers.groovy](qupath/01_detectAndMakeLayers.groovy), but additionally calculates an outer layer with a user-defined width (default 0.5 mm).  
+
 ### 2. Manual workflow
 
 If automatic detection is not suitable, use the manual path:
@@ -44,10 +49,15 @@ If automatic detection is not suitable, use the manual path:
   - **Input:** Selected rectangle annotation.
   - **Output:** Concentric rectangular layers with thickness measurements in mm.
 
+Alternative: 
+- [**M02b_makeLayers_withOuterLayer.groovy**](qupath/M02b_makeLayers_withOuterLayer.groovy)  
+  Same as [M02_makeLayers.groovy](qupath/M02_makeLayers.groovy), but additionally calculates an outer layer with a user-defined width (default 0.5 mm).  
+
+
 #### Manual path steps:
 1. Draw a polygon ROI around the implant area.
 2. Run **M01_polygonToRectangle.groovy** to fit a rectangle.
-3. Run **M02_makeLayers.groovy** to generate layers.
+3. Run **M02_makeLayers.groovy** to generate layers (or use M02b for adding also the outer layer).
 
 ### How to use
 
@@ -63,7 +73,7 @@ The script assumes that the region of interest comes from cutting a cylinder per
 # Author and acknowledgement
 Written by: Iva Švecová (iva.svecova@iem.cas.cz)
 
-Last edited: 2026-04-18
+Last edited: 2026-09-02
 
 If you use the QuPath script for a publication, please cite QuPath:
 Bankhead, P. et al. QuPath: Open source software for digital pathology image analysis. Scientific Reports (2017).
@@ -87,5 +97,6 @@ More information here: https://www.iem.cas.cz/en/department/microscopy-service-c
 | Documentation, troubleshooting | 2 | |
 | Meetings, discussions | 2 | |
 | Update to enable flexible implant length and selection of edge to segment into layers | 1 | 2026-08-04 |
+| Adding the optional outer layer during layer generation | 1 | 2026-09-02 |
 | | | |
 
