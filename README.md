@@ -53,11 +53,17 @@ Alternative:
 - [**M02b_makeLayers_withOuterLayer.groovy**](qupath/M02b_makeLayers_withOuterLayer.groovy)  
   Same as [M02_makeLayers.groovy](qupath/M02_makeLayers.groovy), but additionally calculates an outer layer with a user-defined width (default 0.5 mm).  
 
+- [**M03_addOuterLayer.groovy**](qupath/M03_addOuterLayer.groovy)  
+  Post-hoc alternative to [01b_detectAndMakeLayers_withOuterLayer.groovy](qupath/01b_detectAndMakeLayers_withOuterLayer.groovy) or [M02b_makeLayers_withOuterLayer.groovy](qupath/M02b_makeLayers_withOuterLayer.groovy). Use this script when the concentric layers have already been generated without the outer expanded layer, and the outer layer should be added afterwards.  
+  - **Input:** Selected Layer 1 annotation, expected to represent the current outermost implant layer.
+  - **Output:** An intermediate implant rectangle annotation and a new "Outer layer" annotation with a user-defined width.
+
 
 #### Manual path steps:
 1. Draw a polygon ROI around the implant area.
 2. Run **M01_polygonToRectangle.groovy** to fit a rectangle.
 3. Run **M02_makeLayers.groovy** to generate layers (or use M02b for adding also the outer layer).
+4. If layers were generated without the outer expanded layer, select Layer 1 and run **M03_addOuterLayer.groovy** to add it post-hoc.
 
 ### How to use
 
@@ -98,5 +104,6 @@ More information here: https://www.iem.cas.cz/en/department/microscopy-service-c
 | Meetings, discussions | 2 | |
 | Update to enable flexible implant length and selection of edge to segment into layers | 1 | 2026-08-04 |
 | Adding the optional outer layer during layer generation | 1 | 2026-09-02 |
+| Adding the M03 script to add the outer layer post-hoc | 3 | 2026-09-07, 2026-09-16 |
 | | | |
 
