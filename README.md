@@ -79,7 +79,7 @@ The script assumes that the region of interest comes from cutting a cylinder per
 # Author and acknowledgement
 Written by: Iva Švecová (iva.svecova@iem.cas.cz)
 
-Last edited: 2026-09-02
+Last edited: 2026-09-16
 
 If you use the QuPath script for a publication, please cite QuPath:
 Bankhead, P. et al. QuPath: Open source software for digital pathology image analysis. Scientific Reports (2017).
