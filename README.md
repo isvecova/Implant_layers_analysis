@@ -78,6 +78,7 @@ The script assumes that the region of interest comes from cutting a cylinder per
 
 # Author and acknowledgement
 Written by: Iva Švecová (iva.svecova@iem.cas.cz)
+
 Written for the project of: assoc.prof. Lýdia Vargová, PhD
 
 If you use the QuPath script for a publication, please cite QuPath:
